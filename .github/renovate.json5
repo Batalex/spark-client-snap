@@ -78,18 +78,16 @@
       "enabled": false
     },
     {
-      // Only allow minor and patch updates for central-uploader deps
-      // depType is captured from the shell variable name in customManagers
+      "description": "Allow minor/patch/build updates for central-uploader (this fixes the ubuntuX update)",
       "matchDatasources": ["github-releases"],
       "matchDepNames": ["canonical/central-uploader"],
-      "matchUpdateTypes": ["minor", "patch"],
-      "enabled": false
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "enabled": true
     },
     {
-      // Only allow patch updates for spark tarball source
+      "description": "Keep Spark on 3.5.7 and only allow ubuntuX increments",
       "matchDepTypes": ["spark-source"],
-      "matchUpdateTypes": ["major", "minor"],
-      "enabled": false
+      "allowedVersions": "/^spark-3\\.5\\.7-ubuntu\\d+$/"
     }
   ]
 }
