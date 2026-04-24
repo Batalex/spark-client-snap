@@ -83,7 +83,7 @@
       "matchDatasources": ["github-releases"],
       "matchDepNames": ["canonical/central-uploader"],
       "matchUpdateTypes": ["minor", "patch"],
-      "enabled": true
+      "enabled": false
     },
     {
       // Only allow patch updates for spark tarball source
