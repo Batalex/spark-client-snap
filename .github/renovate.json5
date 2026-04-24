@@ -19,9 +19,6 @@
   ],
   "customManagers": [
     {
-      // Matches pip install lines annotated with:
-      //   # renovate: datasource=pypi
-      // Used for Python packages in snapcraft.yaml spark8t part
       "customType": "regex",
       "fileMatch": ["(^|/)snap/snapcraft\\.yaml$"],
       "matchStrings": [
@@ -47,9 +44,15 @@
       "allowedVersions": "< 2.0.0"
     },
     {
-      "description": "Keep Spark on 3.5.7 and only allow ubuntuX increments",
+      "description": "Keep major.minor.patch and only allow ubuntuX increments",
       "matchDepTypes": ["spark-source"],
-      "allowedVersions": "/^spark-3\\.5\\.7-ubuntu\\d+$/"
+      "allowedVersions": "/^spark-3\\.5\\.7-ubuntu\\d+$/",
+      "prBodyNotes": [
+        "## :warning: Manual action required",
+        "This PR is partially automated but requires further user action:",
+        "1. The timestamp part of the archive URL needs to be updated",
+        "2. The SHA512 needs to be updated",
+      ]
     }
   ]
 }
