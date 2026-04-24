@@ -19,19 +19,9 @@
   ],
   "customManagers": [
     {
-      // Matches shell version variables annotated with:
-      //   # renovate: datasource=<ds> depName=<name> extractVersion=<pattern>
-      // Used for GitHub Releases JARs (e.g. canonical/central-uploader) in snapcraft.yaml
-      "customType": "regex",
-      "fileMatch": ["(^|/)snap/snapcraft\\.yaml$"],
-      "matchStrings": [
-        "#\\s*renovate:\\s*datasource=(?<datasource>[^\\s]+)\\s+depName=(?<depName>[^\\s]+)\\s+extractVersion=(?<extractVersion>[^\\n]+)\\n\\s+\\w+_VERSION='(?<currentValue>[^']+)'"
-      ]
-    },
-    {
       // Matches pip install lines annotated with:
       //   # renovate: datasource=pypi
-      // Used for Python packages in snapcraft.yaml overlay-scripts
+      // Used for Python packages in snapcraft.yaml spark8t part
       "customType": "regex",
       "fileMatch": ["(^|/)snap/snapcraft\\.yaml$"],
       "matchStrings": [
@@ -51,38 +41,10 @@
     }
 
   ],
-  "postUpgradeTasks": {
-    "commands": [
-      "export ASSET_URL=$(curl -s https://api.github.com/repos/canonical/central-uploader/releases/tags/{{{newValue}}} | grep browser_download_url | grep -o 'https://[^\"]*bin-k8s\\.tgz')",
-      "export ASSET_SHA512=$(wget -qO- \"$ASSET_URL\" | sha512sum | awk '{print $1}')",
-      "sed -i -e \"s|https://github.com/canonical/central-uploader/releases/download/[^ ]*\\.tgz|$ASSET_URL|g\" {{{fileFilters}}}",
-      "sed -i -E -e \"s|^([[:space:]]*source-checksum:[[:space:]]*)sha512/[a-f0-9]+$|\\1sha512/$ASSET_SHA512|\" {{{fileFilters}}}"
-    ],
-    "fileFilters": [
-      "**/snapcraft.yaml"
-    ],
-    "executionMode": "branch"
-  },
   "packageRules": [
     {
       "matchPackageNames": ["spark8t"],
       "allowedVersions": "< 2.0.0"
-    },
-    {
-      // Only allow minor and patch updates for central-uploader deps
-      // depType is captured from the shell variable name in customManagers
-      // "canonical/central-uploader" 
-      "matchDatasources": ["github-releases"],
-      "matchDepNames": ["canonical/central-uploader"],
-      "matchUpdateTypes": ["major"],
-      "enabled": false
-    },
-    {
-      "description": "Allow minor/patch/build updates for central-uploader (this fixes the ubuntuX update)",
-      "matchDatasources": ["github-releases"],
-      "matchDepNames": ["canonical/central-uploader"],
-      "matchUpdateTypes": ["minor", "patch", "digest"],
-      "enabled": true
     },
     {
       "description": "Keep Spark on 3.5.7 and only allow ubuntuX increments",
