@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
       - name: Extract branch metadata
         shell: bash
@@ -39,14 +39,14 @@ jobs:
 
   build:
     name: Build snap
-    uses: canonical/data-platform-workflows/.github/workflows/build_snap.yaml@v48.0.2
+    uses: canonical/data-platform-workflows/.github/workflows/build_snap.yaml@55747dffd714468ba26d77c2351994b79fa3c874 # v48.1.2
 
   release:
     name: Release snap
     needs:
       - build
       - release_checks
-    uses: canonical/data-platform-workflows/.github/workflows/release_snap_edge.yaml@v48.0.2
+    uses: canonical/data-platform-workflows/.github/workflows/release_snap_edge.yaml@55747dffd714468ba26d77c2351994b79fa3c874 # v48.1.2
     with:
       track: ${{ needs.release_checks.outputs.track }}
       artifact-prefix: ${{ needs.build.outputs.artifact-prefix }}
